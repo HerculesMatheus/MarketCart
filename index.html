@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <h1 class="navbar__title">E-commerce</h1>
+        <div class="navbar__cartContainer">
+          <div class="navbar__showCart">
+            <button class="showCart__button">
+              <img
+                src="./assets/cart.svg"
+                alt="Botão para abrir e fechar o carrinho"
+                class="showCart__icon"
+              />
+            </button>
+            <span class="showCart__quantity">0</span>
+          </div>
+          <div class="navbar__cart">
+            <div class="cart__head">
+              <h3 class="cart__title">Carrinho</h3>
+              <button
+                class="item__buttons--select-all"
+                data-checked="true"
+                title="Selecionar todos"
+              >
+                <img
+                  class="select-all--image"
+                  src="./assets/checked.svg"
+                  alt="Selecionar todos os produtos"
+                />
+              </button>
+              <button class="cart__close">
+                <img
+                  src="./assets/close.svg"
+                  alt="Botão de fechar o carrinho"
+                />
+              </button>
+            </div>
+            <span class="divisor"></span>
+            <div class="cart__itemsContainer"></div>
+            <span class="divisor"></span>
+            <div class="cart__price">
+              <div class="price__discount">
+                <div class="discount__title">Desconto</div>
+                <span class="divisor--dashed"></span>
+                <div class="discount__value"></div>
+              </div>
+              <div class="price__total">
+                <div class="total__title">Total</div>
+                <span class="divisor--dashed"></span>
+                <div class="total__value"></div>
+              </div>
+            </div>
+            <div class="cart__button">Finalizar Compra</div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="productSession">
+        <h2 class="productSession__title">Produtos</h2>
+        <div class="productSession__grid"></div>
+      </section>
+    </main>
+    <script src="./scripts/main.js" type="module"></script>
+  </body>
+</html>
