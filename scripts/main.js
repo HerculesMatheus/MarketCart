@@ -3,7 +3,7 @@ import drawGridCards from "./drawGridCards.js";
 import {
   selectAllItems,
   drawCartItems,
-  showPriceAndQty,
+  showPriceAndQuantity,
 } from "./cartFunctions.js";
 import { toggleCartVisibility, closeCart } from "./handleCart.js";
 
@@ -13,8 +13,6 @@ const storagedSelectedProduct =
 
 document.addEventListener("DOMContentLoaded", () => {
   init();
-  toggleCartVisibility();
-  closeCart();
 });
 
 function populateCards() {
@@ -24,10 +22,12 @@ function populateCards() {
 function populateCart() {
   storagedProduct.map((x) => drawCartItems(x));
   selectAllItems();
-  showPriceAndQty(storagedSelectedProduct);
+  showPriceAndQuantity(storagedSelectedProduct);
 }
 
 function init() {
   populateCards();
   populateCart();
+  toggleCartVisibility();
+  closeCart();
 }

@@ -1,23 +1,23 @@
 var cartList = JSON.parse(localStorage.getItem("list")) || [];
 var checkoutList = [];
 
-function drawCartItems(params) {
+function drawCartItems(item) {
   const container = document.querySelector(".cart__itemsContainer");
 
   const cartItem = document.createElement("div");
   cartItem.classList.add("cart__item");
-  cartItem.setAttribute("id", params.id);
+  cartItem.setAttribute("id", item.id);
 
   const itemImg = document.createElement("img");
-  itemImg.src = params.image;
-  itemImg.alt = params.name;
+  itemImg.src = item.image;
+  itemImg.alt = item.name;
   itemImg.classList.add("item__img");
 
   const itemInfo = document.createElement("div");
   itemInfo.classList.add("item__info");
 
   const itemInfoTitle = document.createElement("p");
-  itemInfoTitle.innerText = params.name;
+  itemInfoTitle.innerText = item.name;
   itemInfoTitle.classList.add("item__title");
 
   const itemInfoQuantity = document.createElement("div");
@@ -25,21 +25,25 @@ function drawCartItems(params) {
 
   const itemInfoQuantityValue = document.createElement("p");
   itemInfoQuantityValue.classList.add("item__quantity--value");
-  itemInfoQuantityValue.innerText = params.qty.toString();
+  itemInfoQuantityValue.innerText = item.quantity.toString();
 
   const itemInfoQuantityMinus = document.createElement("button");
   itemInfoQuantityMinus.classList.add("item__quantity--minus");
-  itemInfoQuantityMinus.dataset.id = params.id;
+  itemInfoQuantityMinus.dataset.id = item.id;
   itemInfoQuantityMinus.addEventListener("click", () => {
-    const obj = cartList.find((item) => item.id == params.id);
-    if (obj.qty > 1) {
-      obj.qty -= 1;
-      itemInfoQuantityValue.innerText = obj.qty.toString();
+    const storagedItem = cartList.find(
+      (storagedItem) => storagedItem.id == item.id
+    );
+    if (storagedItem.quantity > 1) {
+      storagedItem.quantity -= 1;
+      itemInfoQuantityValue.innerText = storagedItem.quantity.toString();
     }
-    localStorage.setItem("list", JSON.stringify(cartList));
-    checkoutList = cartList;
+    checkoutList = cartList.filter(
+      (storagedItem) => storagedItem.selected === true
+    );
     localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
-    showPriceAndQty(checkoutList);
+    localStorage.setItem("list", JSON.stringify(cartList));
+    showPriceAndQuantity(checkoutList);
   });
 
   const itemInfoQuantityMinusImg = document.createElement("img");
@@ -48,17 +52,21 @@ function drawCartItems(params) {
 
   const itemInfoQuantityPlus = document.createElement("button");
   itemInfoQuantityPlus.classList.add("item__quantity--plus");
-  itemInfoQuantityPlus.dataset.id = params.id;
+  itemInfoQuantityPlus.dataset.id = item.id;
   itemInfoQuantityPlus.addEventListener("click", () => {
-    const obj = cartList.find((item) => item.id == params.id);
-    if (obj.qty < 99) {
-      obj.qty += 1;
-      itemInfoQuantityValue.innerText = obj.qty.toString();
+    const storagedItem = cartList.find(
+      (storagedItem) => storagedItem.id == item.id
+    );
+    if (storagedItem.quantity < 99) {
+      storagedItem.quantity += 1;
+      itemInfoQuantityValue.innerText = storagedItem.quantity.toString();
     }
-    checkoutList = cartList.filter((item) => item.selected === true);
+    checkoutList = cartList.filter(
+      (storagedItem) => storagedItem.selected === true
+    );
     localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
     localStorage.setItem("list", JSON.stringify(cartList));
-    showPriceAndQty(checkoutList);
+    showPriceAndQuantity(checkoutList);
   });
 
   const itemInfoQuantityPlusImg = document.createElement("img");
@@ -66,20 +74,22 @@ function drawCartItems(params) {
   itemInfoQuantityPlusImg.alt = "Aumentar quantidade";
 
   const itemPrice = document.createElement("p");
-  itemPrice.innerText = `R$ ${params.price}`;
+  itemPrice.innerText = `R$ ${item.price}`;
   itemPrice.classList.add("item__price");
-  itemPrice.setAttribute("value", params.price);
+  itemPrice.setAttribute("value", item.price);
 
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("item__buttons--delete");
-  deleteButton.dataset.id = params.id;
+  deleteButton.dataset.id = item.id;
   deleteButton.addEventListener("click", () => {
     cartItem.remove();
-    cartList = cartList.filter((item) => item.id !== params.id);
+    cartList = cartList.filter((storagedItem) => storagedItem.id !== item.id);
     localStorage.setItem("list", JSON.stringify(cartList));
-    checkoutList = checkoutList.filter((item) => item.id !== params.id);
+    checkoutList = checkoutList.filter(
+      (storagedItem) => storagedItem.id !== item.id
+    );
     localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
-    showPriceAndQty(checkoutList);
+    showPriceAndQuantity(checkoutList);
   });
 
   const deleteButtonImg = document.createElement("img");
@@ -90,24 +100,30 @@ function drawCartItems(params) {
   checkButton.classList.add("item__buttons--select");
   checkButton.dataset.checked = "true";
   checkButton.addEventListener("click", () => {
-    const obj = cartList.find((item) => item.id === params.id);
+    const storagedItem = cartList.find(
+      (storagedItem) => storagedItem.id === item.id
+    );
     if (checkButton.dataset.checked === "false") {
       checkButtonImg.src = "./assets/checked.svg";
       checkButton.dataset.checked = "true";
-      obj.selected = true;
+      storagedItem.selected = true;
       localStorage.setItem("list", JSON.stringify(cartList));
-      checkoutList = cartList.filter((item) => item.selected == true);
+      checkoutList = cartList.filter(
+        (storagedItem) => storagedItem.selected == true
+      );
       localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
-      showPriceAndQty(checkoutList);
+      showPriceAndQuantity(checkoutList);
       return;
     }
     checkButtonImg.src = "./assets/unchecked.svg";
     checkButton.dataset.checked = "false";
-    obj.selected = false;
+    storagedItem.selected = false;
     localStorage.setItem("list", JSON.stringify(cartList));
-    checkoutList = cartList.filter((item) => item.selected == true);
+    checkoutList = cartList.filter(
+      (storagedItem) => storagedItem.selected == true
+    );
     localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
-    showPriceAndQty(checkoutList);
+    showPriceAndQuantity(checkoutList);
   });
 
   const checkButtonImg = document.createElement("img");
@@ -135,7 +151,7 @@ function drawCartItems(params) {
   cartItem.appendChild(deleteButton);
 
   container.prepend(cartItem);
-  showPriceAndQty(checkoutList);
+  showPriceAndQuantity(checkoutList);
 }
 
 function selectAllItems() {
@@ -157,19 +173,19 @@ function selectAllItems() {
       selectOnlyImg[index].src = checked
         ? "./assets/checked.svg"
         : "./assets/unchecked.svg";
-      cartList[index].selected = checked; // atualiza cada item
+      cartList[index].selected = checked; // atualiza cada storagedItem
     });
 
     checkoutList = checked ? [...cartList] : [];
     localStorage.setItem("list", JSON.stringify(cartList));
     localStorage.setItem("checkoutList", JSON.stringify(checkoutList));
-    showPriceAndQty(checkoutList);
+    showPriceAndQuantity(checkoutList);
   });
 }
 
-function addToCart(params) {
-  if (!cartList.some((item) => item.id === params.id)) {
-    const list = { ...params, qty: 1, selected: true };
+function addToCart(item) {
+  if (!cartList.some((storagedItem) => storagedItem.id === item.id)) {
+    const list = { ...item, quantity: 1, selected: true };
 
     cartList.unshift(list);
     localStorage.setItem("list", JSON.stringify(cartList));
@@ -179,14 +195,21 @@ function addToCart(params) {
   }
 }
 
-function calcTotalPrice(params) {
+function calculateTotalPrice(item) {
   let discount = 0;
   let price = 0;
 
-  params.map(
-    (obj) => (discount += parseFloat(obj.discounts) * parseFloat(obj.qty) || 0)
+  item.map(
+    (storagedItem) =>
+      (discount +=
+        parseFloat(storagedItem.discounts) *
+          parseFloat(storagedItem.quantity) || 0)
   );
-  params.map((obj) => (price += parseFloat(obj.price) * parseFloat(obj.qty)));
+  item.map(
+    (storagedItem) =>
+      (price +=
+        parseFloat(storagedItem.price) * parseFloat(storagedItem.quantity))
+  );
 
   var totalPrice = price - discount;
 
@@ -196,23 +219,23 @@ function calcTotalPrice(params) {
   return { totalPrice, discount };
 }
 
-function showPriceAndQty(params) {
+function showPriceAndQuantity(item) {
   const discountDisplay = document.querySelector(".discount__value");
   const priceDisplay = document.querySelector(".total__value");
   const quantityDisplay = document.querySelector(".showCart__quantity");
-  const { totalPrice, discount } = calcTotalPrice(params);
+  const { totalPrice, discount } = calculateTotalPrice(item);
 
   discountDisplay.innerText = `R$ ${discount.toString()}`;
   priceDisplay.innerText = `R$ ${totalPrice.toString()}`;
-  quantityDisplay.innerText = showQty();
+  quantityDisplay.innerText = calculateQuantity();
 }
 
-function showQty() {
+function calculateQuantity() {
   const list = JSON.parse(localStorage.getItem("list"));
   let quantity = 0;
-  list.map((obj) => (quantity += parseInt(obj.qty)));
+  list.map((storagedItem) => (quantity += parseInt(storagedItem.quantity)));
   quantity = quantity.toString();
   return quantity;
 }
 
-export { drawCartItems, addToCart, selectAllItems, showPriceAndQty };
+export { drawCartItems, addToCart, selectAllItems, showPriceAndQuantity };
