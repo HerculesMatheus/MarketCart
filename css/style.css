@@ -78,6 +78,12 @@ button {
   justify-content: center;
 }
 
+.navbar__cartContainer .navbar__cart {
+  display: none;
+  transform: translateX(150%);
+  transition: none;
+}
+
 .navbar__showCart {
   display: flex;
   flex-direction: row;
@@ -234,13 +240,6 @@ button {
   align-items: baseline;
 }
 
-/* .discount__title,
-.discount__value,
-.total__title,
-.total__value {
-  width: 100%;
-} */
-
 .cart__button {
   display: flex;
   flex-direction: row;
@@ -330,4 +329,22 @@ button {
 
 .card__button:hover {
   filter: drop-shadow(0px 0px 10px #0ba4bc);
+}
+
+@keyframes showCart {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hideCart {
+  from {
+    right: 0;
+  }
+  to {
+    right: -150%;
+  }
 }

@@ -5,6 +5,7 @@ import {
   drawCartItems,
   showPriceAndQty,
 } from "./cartFunctions.js";
+import { toggleCartVisibility, closeCart } from "./handleCart.js";
 
 const storagedProduct = JSON.parse(localStorage.getItem("list")) || [];
 const storagedSelectedProduct =
@@ -12,6 +13,8 @@ const storagedSelectedProduct =
 
 document.addEventListener("DOMContentLoaded", () => {
   init();
+  toggleCartVisibility();
+  closeCart();
 });
 
 function populateCards() {
